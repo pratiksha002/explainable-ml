@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pkl
+*.joblib
+
+# Virtual Environment
+.venv/
+env/
+
+# Data files
+data/*.csv
+
+# OS
+.DS_Store
