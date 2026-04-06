@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import pickle
 import pandas as pd
+from app.schemes import HouseData
 
 app = FastAPI()
 
@@ -12,9 +13,9 @@ def home():
     return {"message": "Explainable ML API is running"}
 
 @app.post("/predict")
-def predict(data: dict):
+def predict(data: HouseData):
     try:
-        df = pd.DataFrame([data])
+        df = pd.DataFrame([data.dict()])
         prediction = model.predict(df)[0]
 
         return {
