@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import pickle
 import pandas as pd
 from app.schemes import HouseData
+from app.explainers.shap_explainer import explain_shap
 
 app = FastAPI()
 
@@ -12,14 +13,16 @@ with open("app/models/model.pkl", "rb") as f:
 def home():
     return {"message": "Explainable ML API is running"}
 
-@app.post("/predict")
-def predict(data: HouseData):
+@app.post("/explain")
+def explain(data: HouseData):
     try:
         df = pd.DataFrame([data.dict()])
         prediction = model.predict(df)[0]
+        shap_values = explain_shap(df)
 
         return {
-            "prediction": float(prediction)
+            "prediction": float(prediction),
+            "shap_values": shap_values
         }
     
     except Exception as e:

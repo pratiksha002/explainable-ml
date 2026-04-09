@@ -5,7 +5,7 @@ import pandas as pd
 with open("app/models/model.pkl", "rb") as f:
     model = pickle.load(f)
 
-explainer = shap.TreeExplainer
+explainer = shap.Explainer(model)
 
 def explain_shap(input_df):
     shap_values = explainer.shap_values(input_df)
