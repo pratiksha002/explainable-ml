@@ -15,8 +15,10 @@ explainer = LimeTabularExplainer(
 )
 
 def explain_lime(input_df):
+    instance = input_df.iloc[0].values
+
     exp = explainer.explain_instance(
-        input_df.iloc[0],
+        instance,
         model.predict
     )
 
