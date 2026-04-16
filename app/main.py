@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 from app.schemes import HouseData
 from app.explainers.shap_explainer import explain_shap
-from app.explainers.custom_explainer import generate_reasoning
+from app.explainers.shap_explainer import generate_reasoning
 
 app = FastAPI()
 
