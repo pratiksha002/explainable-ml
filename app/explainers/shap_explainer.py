@@ -38,13 +38,31 @@ def explain_shap(input_df):
 
 
 def generate_reasoning(explaination_dict):
+    feature_meaning = {
+        "MedInc": "median income",
+        "HouseAge": "house age",
+        "AveRooms": "average number of rooms",
+        "AveBedrms": "average bedrooms",
+        "Population": "population in the area",
+        "AveOccup": "average occupancy",
+        "Latitude": "location (latitude)",
+        "Longitude": "location (longitude)"
+    }
+
     reasons = []
 
     for feature, value in list(explaination_dict.items())[:3]:
-        if value > 0:
-            reasons.append(f"{feature} increased the prediction")
+        name = feature_meaning.get(feature, feature)
 
+        if value > 0:
+            if abs(value) > 1:
+                reasons.append(f"High {name} strongly increased the house price")
+            else:
+                reasons.append(f"{name} slightly increased the house price")
         else:
-            reasons.append(f"{feature} decreased the prediction")
+            if abs(value) > 1:
+                reasons.append(f"{name} strongly decreased the house price")
+            else:
+                reasons.append(f"{name} slightly decreased the house price")
 
     return reasons
