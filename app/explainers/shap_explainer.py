@@ -35,3 +35,16 @@ def explain_shap(input_df):
         )
     )
     return explanation
+
+
+def generate_reasoning(explaination_dict):
+    reasons = []
+
+    for feature, value in list(explaination_dict.items())[:3]:
+        if value > 0:
+            reasons.append(f"{feature} increased the prediction")
+
+        else:
+            reasons.append(f"{feature} decreased the prediction")
+
+    return reasons
