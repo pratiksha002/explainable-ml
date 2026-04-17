@@ -6,6 +6,8 @@ from app.explainers.shap_explainer import explain_shap
 from app.explainers.shap_explainer import generate_reasoning
 from app.explainers.lime_explainer import explain_lime
 from app.explainers.custom_explainer import compare_explanations
+from app.database.db import collection
+from datetime import datetime 
 
 app = FastAPI()
 
@@ -26,6 +28,18 @@ def explain(data: HouseData):
         reasons = generate_reasoning(shap_values)
         comparison = compare_explanations(shap_values, lime_values)
 
+        record = {
+            "input": data.dict(),
+            "prediction": float(prediction),
+            "shap_values": shap_values,
+            "lime_values": lime_values,
+            "top_reasons": reasons,
+            "comparison": comparison,
+            "timestamp": datetime.now()
+        }
+        print("Saving to DB...")
+        collection.insert_one(record)
+        print("Saved")
         return {
             "prediction": float(prediction),
             "shap_values": shap_values,
