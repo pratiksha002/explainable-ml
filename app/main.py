@@ -68,3 +68,9 @@ def get_history():
         return{
             "error": str(e)
         }
+    
+
+@app.delete("/clear-test")
+def clear_test():
+    collection.delete_many({"test": "working"})
+    return {"message": "Test data removed"}
