@@ -53,3 +53,18 @@ def explain(data: HouseData):
     return {
         "error": str(e)
     }
+
+@app.get("/history")
+def get_history():
+    try:
+        data = list(collection.find({}, {"_id":0}))
+
+        return{
+            "total_records": len(data),
+            "records": data
+        }
+    
+    except Exception as e:
+        return{
+            "error": str(e)
+        }
