@@ -8,6 +8,10 @@ collection = db["predictions"]
 
 st.title("Explainable ML Dashboard")
 
+st.sidebar.header("Filters")
+min_income = st.sidebar.slider("Min Median Income", 0.0, 15.0, 0.0)
+max_income = st.sidebar.slider("Max Median Income", 0.0, 15.0, 15.0)
+
 data = list(collection.find({}, {"_id":0}))
 
 if len(data) == 0:
@@ -15,6 +19,12 @@ if len(data) == 0:
 
 else:
     df = pd.json_normalize(data)
+
+    if "input.MedInc" in df.columns:
+        df = df[
+            (df["input.MedInc"] >= min_income) &
+            (df["input.MedInc"] <= max_income)
+            ]
 
     st.subheader("Raw Data")
     st.dataframe(df)
@@ -42,6 +52,6 @@ else:
     filtered_df = df.dropna(subset=["input.MedInc", "prediction"])
     
     if not filtered_df.empty:
-        st .scatter_chart(filtered_df[["input.MedInc", "prediction"]])
+        st.scatter_chart(filtered_df[["input.MedInc", "prediction"]])
     else:
         st.write("NOt enough data for scatter plot")
